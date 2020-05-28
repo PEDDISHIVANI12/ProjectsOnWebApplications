@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<html>
+    <head>
+    <title>Bill</title>
+    <style>
+      .body {
+               background-image:url({% static 'blue.jpg' %});
+               font-style: oblique;
+            }
+    #invoice-POS{
+      box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+      padding:2mm;
+      margin: 0 auto;
+      width: 70mm;
+      background: #FFF;
+      
+      
+    ::selection {background: #f31544; color: #FFF;}
+    ::moz-selection {background: #f31544; color: #FFF;}
+    h1{
+      font-size: 1.5em;
+      color: #222;
+    }
+    h2{font-size: .9em;}
+    h3{
+      font-size: 1.2em;
+      font-weight: 300;
+      line-height: 2em;
+    }
+    p{
+      font-size: .7em;
+      color: #666;
+      line-height: 1.2em;
+    }
+    
+    .info{
+      display: block;
+      //float:left;
+      margin-left: 0;
+    }
+    .title{
+      float: right;
+    }
+    .title p{text-align: right;} 
+    table{
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td{
+      //padding: 5px 0 5px 15px;
+      //border: 1px solid #EEE
+    }
+    .tabletitle{
+      //padding: 5px;
+      font-size: .5em;
+      background: #EEE;
+    }
+    .service{border-bottom: 1px solid #EEE;}
+    .item{width: 24mm;}
+    .itemtext{font-size: .5em;}
+    
+    #legalcopy{
+      margin-top: 5mm;
+    }
+    
+    .round1 {
+                    border: 2px solid #5AB9D0;
+                    border-radius: 5px;
+                    padding:10px;
+                  } 
+    </style>
+     <div class="round1" style="background-color:white">
+      <table>
+          <tr>
+              <th style="align:left;position:relative;top:8px"> 
+                  <img src="{% static 'l.png' %}" align="left" width="85px" height="75px">
+                   
+        </th>
+        <th><img src="{% static 'logo.png' %}" align="left" width="160px" height="85px"></th>
+        <th style="align:right;position:relative;left:900px"><a href="{% url 'index' %}">logout</a></th>    
+      </tr>
+          </table>
+          </div>
+    </head>
+    <body>
+        <div class="body">
+      <div id="invoice-POS">
+        
+        <center id="top">
+          <div class="logo"></div>
+          <div class="info"> 
+             <center> <img src="{% static 'logo.png' %}" align="left" width="160px" height="85px"></center>
+          </div><!--End Info-->
+        </center><!--End InvoiceTop-->
+        
+        <div id="mid">
+          <div class="info">
+              <img src="{% static 'oc.jpg' %}" width="230px">
+            <script> 
+              // Function to generate OTP 
+              function generateOTP() { 
+                        
+                  // Declare a digits variable  
+                  // which stores all digits 
+                  var digits = '0123456789'; 
+                  let OTP = ''; 
+                  for (let i = 0; i < 4; i++ ) { 
+                      OTP += digits[Math.floor(Math.random() * 10)]; 
+                  } 
+                  return OTP; 
+              } 
+              var myvar = generateOTP();
+              document.write('Your Order ID: '); 
+              document.write(myvar);
+              
+              </script>
+
+              <script>
+                function getParams(){
+                  var idx = document.URL.indexOf('?');
+                  var params = new Array();
+                  if(idx != -1){
+                    var pairs = document.URL.substring(idx+1,document.URL.length).split('&');
+                    for(var i=0;i < pairs.length;i++){
+                      nameVal = pairs[i].split('=');
+                      params[nameVal[0]]=nameVal[1];
+                    }
+                  }
+                  return params;
+                }
+                params = getparams();
+                firstname = unescape(params["firstname"]);
+                document.write("firstname = " +firstname +"<br>")
+                </script>
+
+              <a href="{% url 'track' %}"><button class="button button1"> <font size="4">Track your order</font> </button></a>      
+              
+               <p><strong> Pickup date :</strong>{{  service.pickup_date }}</p>
+               <p><strong>Delivery date :</strong>{{  service.delivery_date }}</p>
+               <p><strong> Pickup address :</strong></p>
+               <address><p> Flat no.:{{  service.pickup_flat }} ,<br>locality :{{  service.pickup_locality }},<br>pincode :{{  service.pickup_pincode }}<br>City&NonBreakingSpace;:&NonBreakingSpace;Hyderabad<br>Country&NonBreakingSpace;:&NonBreakingSpace;India</p></address>
+               <p><strong>Delivery address :</strong></p>
+               <address><p> Flat no.:{{  service.delivery_flat }} ,<br>locality :{{  service.delivery_locality }},<br>pincode :{{  service.delivery_pincode }}<br>City&NonBreakingSpace;:&NonBreakingSpace;Hyderabad<br>Country&NonBreakingSpace;:&NonBreakingSpace;India</p></address>
+               <p> Email-ID :{{  service.email }}</p>
+               <p> Payment mode :{{  service.pay }}</p>
+
+          </div>
+        </div><!--End Invoice Mid-->
+        
+                        <div id="legalcopy">
+                            <p class="legal"><strong>Thank you </p>
+                        </div>
+    
+                    </div><!--End InvoiceBot-->
+      </div><!--End Invoice-->
+    </div>
+    </body>
+    </html>
+{% endblock %}

@@ -1,0 +1,1199 @@
+{% extends 'base.html' %}
+
+
+{% block title %}cart{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+ 
+  
+  {% load static %}
+ 
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basket</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+
+<style>
+
+@charset "utf-8";
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
+
+html,
+html a {
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+}
+
+body {
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 auto;
+}
+
+a {
+  border: 0 none;
+  outline: 0;
+  text-decoration: none;
+}
+
+strong {
+  font-weight: bold;
+}
+
+p {
+  margin: 0.75rem 0 0;
+}
+
+h1 {
+  font-size: 0.75rem;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button {
+  border: 0 none;
+  outline: 0 none;
+}
+
+button {
+  background-color: #666;
+  color: #fff;
+}
+
+button:hover,
+button:focus {
+  background-color: #555;
+}
+
+img,
+.basket-module,
+.basket-labels,
+.basket-product {
+  width: 100%;
+}
+
+input,
+button,
+.basket,
+.basket-module,
+.basket-labels,
+.item,
+.price,
+.quantity,
+.subtotal,
+.basket-product,
+.product-image,
+.product-details {
+  float: left;
+}
+
+.price:before,
+.subtotal:before,
+.subtotal-value:before,
+.total-value:before,
+.promo-value:before {
+  content: 'Rs.';
+}
+
+.hide {
+  display: none;
+}
+
+main {
+  clear: both;
+  font-size: 0.75rem;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 1rem 0;
+  width: 960px;
+}
+
+.basket,
+aside {
+  padding: 0 1rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.basket {
+  width: 70%;
+}
+
+.basket-module {
+  color: #111;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3125rem;
+}
+
+
+
+.basket-labels {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-top: 1.625rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  color: #111;
+  display: inline-block;
+  padding: 0.625rem 0;
+}
+
+li.price:before,
+li.subtotal:before {
+  content: '';
+}
+
+.item {
+  width: 55%;
+}
+
+.price,
+.quantity,
+.subtotal {
+  width: 15%;
+}
+
+.subtotal {
+  text-align: right;
+}
+
+.remove {
+  bottom: 1.125rem;
+  float: right;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  width: 45%;
+}
+
+.remove button {
+  background-color: transparent;
+  color: black;
+  float: none;
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+.item-heading {
+  padding-left: 4.375rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.basket-product {
+  border-bottom: 1px solid black;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.product-image {
+  width: 35%;
+}
+
+.product-details {
+  width: 65%;
+}
+
+.product-frame {
+  border: 1px solid #aaa;
+}
+
+.product-details {
+  padding: 0 1.5rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.quantity-field {
+  background-color: #ccc;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  padding: 2px;
+  width: 3.75rem;
+}
+
+aside {
+  float: right;
+  position: relative;
+  width: 30%;
+}
+
+.summary {
+  background-color: #5e979f;
+  border: 1px solid #aaa;
+  padding: 1rem;
+  position: fixed;
+  width: 250px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.summary-total-items {
+  color: black;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.summary-subtotal,
+.summary-total {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  clear: both;
+  margin: 1rem 0;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.subtotal-title,
+.subtotal-value,
+.total-title,
+.total-value,
+.promo-title,
+.promo-value {
+  color: #111;
+  float: left;
+  width: 50%;
+}
+
+.summary-promo {
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.promo-title {
+  float: left;
+  width: 70%;
+}
+
+.promo-value {
+  color: #8B0000;
+  float: left;
+  text-align: right;
+  width: 30%;
+}
+
+.summary-delivery {
+  padding-bottom: 3rem;
+}
+
+.subtotal-value,
+.total-value {
+  text-align: right;
+}
+
+.total-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.summary-checkout {
+  display: block;
+}
+
+.checkout-cta {
+  display: block;
+  float: none;
+  font-size: 0.75rem;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0.625rem 0;
+  width: 100%;
+}
+
+.summary-delivery-selection {
+  background-color: #4a8088;
+  border: 1px solid #4a8088;
+  border-radius: 4px;
+  display: block;
+  font-size: 0.625rem;
+  height: 34px;
+  width: 100%;
+}
+
+@media screen and (max-width: 640px) {
+  aside,
+  .basket,
+  .summary,
+  .item,
+  .remove {
+    width: 100%;
+  }
+  .basket-labels {
+    display: none;
+  }
+  .basket-module {
+    margin-bottom: 1rem;
+  }
+  .item {
+    margin-bottom: 1rem;
+  }
+  .product-image {
+    width: 40%;
+  }
+  .product-details {
+    width: 60%;
+  }
+  .price,
+  .subtotal {
+    width: 33%;
+  }
+  .quantity {
+    text-align: center;
+    width: 34%;
+  }
+  .quantity-field {
+    float: none;
+  }
+  .remove {
+    bottom: 0;
+    text-align: left;
+    margin-top: 0.75rem;
+    position: relative;
+  }
+  .remove button {
+    padding: 0;
+  }
+  .summary {
+    margin-top: 1.25rem;
+    position: relative;
+  }
+}
+@media screen and (min-width: 641px) and (max-width: 960px) {
+  aside {
+    padding: 0 1rem 0 0;
+  }
+  .summary {
+    width: 28%;
+  }
+}
+@media screen and (max-width: 960px) {
+  main {
+    width: 100%;
+  }
+  .product-details {
+    padding: 0 1rem;
+  }
+}
+.button1 {
+        border-radius:10px;
+        background-color:white;  
+        color:#00ADEF; 
+        border: 2px solid #00ADEF;
+        padding:15px 32px;
+        position:relative;
+        right:30px;
+      }
+    table,td,th{
+        width:100%;
+        background:white;
+        padding:1px;
+   }
+   div.relative{
+       text-align:right;
+       position:relative;
+       right:40px;
+   }
+   .round1 {
+  border: 2px solid #00ADEF;
+  background:white;
+  border-radius: 5px;
+  padding:10px;
+}
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  background-color: #5e979f;
+  width: 20%;
+  height: 800px;
+}
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 17px;
+}
+.tab button:hover {
+  background-color: #4a8088;
+}
+.tab button.active {
+  background-color: #4a8088;
+}
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #5e979f;
+  width: 70%;
+  border-left: none;
+  height: 800px;
+}
+.button1 {
+        border-radius:10px;
+        background-color:white;  
+        color:white; 
+        border: 2px solid #00ADEF;
+        padding:15px 32px;
+        position:relative;
+        right:30px;
+      }
+    table,td,th{
+        width:100%;
+        background:white;
+        padding:1px;
+   }
+   div.relative{
+       text-align:right;
+       position:relative;
+       right:40px;
+   }
+   .round1 {
+  border: 2px solid #00ADEF;
+  background:white;
+  border-radius: 5px;
+  padding:10px;
+}
+
+.button1 {
+                    border-radius:10px;
+                    background-color:white;  
+                    color:#5AB9D0; 
+                    border: 2px solid #5AB9D0;
+                    padding:15px 32px;
+                    position:relative;
+                    right:30px;
+                  }
+                table,td,th{
+                    width:100%;
+                    background:white;
+                    padding:1px;
+               }
+</style>
+<div class="round1">
+  <table>
+      <tr> 
+        <th style="position:relative;right:32%"> 
+            
+            <img src="{% static 'l.png' %}" style="align:left;width:70px;height:75px">
+            <img src="{% static 'logo.png' %}" style="align:left;width:130px;height:75px">
+
+    
+</th>
+       <th><a href="{% url 'index' %}"><button class="button button1"> <font size="4">logout</font> </button></a></th>    
+      </tr>
+      </table>
+      </div>
+</head>
+<body>
+    <aside>
+        <div class="summary">
+          <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div>
+         
+          <div class="summary-total" id="total">
+              <div class="total-title">Total</div>
+              <div class="total-value final-value" id="basket-total"></div>
+              <form type=get action="{% url 'add_service_submit' %}">
+                <input type="text" id="mytext" name="firstname" disabled>
+                </form>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+             </div>
+            </div>
+            <div class="summary-promo hide">
+              <div class="promo-title">Promotion</div>
+              <div class="promo-value final-value" id="basket-promo"></div>
+            </div>
+            <div class="summary-checkout">
+                <a href="{% url 'add_service' %}">Go to Secure Checkout</a>
+               </div>
+          </div>
+        </div>
+      </aside>
+
+<div class="tab">
+    <center><h1 style="font-size: 1.125rem;">Hi  {{  user.username }}!</h1></center>
+  <button class="tablinks" onclick="openCity(event, 'men')" id="defaultOpen">MEN</button>
+  <button class="tablinks" onclick="openCity(event, 'women')">WOMEN</button>
+  <button class="tablinks" onclick="openCity(event, 'kids')">KIDS</button>
+  <button class="tablinks" onclick="openCity(event, 'household')">HOUSEHOLD</button>
+</div>
+
+
+<div id="men" class="tabcontent">
+  <div class="basket">
+  <div class="basket-labels">
+      <ul>
+        <li class="item item-heading">Item(s)</li>
+        <li class="price">Price</li>
+        <li class="quantity">Quantity</li>
+        <li class="subtotal">Subtotal</li>
+      </ul>
+    </div>
+    <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'index.jpeg' %}"  alt="Placholder Image 2" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Shirt</strong></h1>
+          </div>
+      </div>
+      <div class="price">45.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+    <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'pant.jpg' %}"  alt="Placholder Image 2" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>pant</strong></h1>
+        </div>
+      </div>
+      <div class="price"  >55.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0"id="q" class="quantity-field">
+      </div>
+      <div class="subtotal"id="r" >0.00</div>
+    </div>
+    
+    <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'me.jpeg' %}"  alt="Placholder Image 2" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Ethnic (Dry Cleaning)</strong></h1>
+        </div>
+      </div>
+      <div class="price">299.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+    <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'su.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Suit</strong></h1>
+        </div>
+      </div>
+      <div class="price">399.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+</div>
+</div>
+
+<div id="women" class="tabcontent">
+  <div class="basket">
+      <div class="basket-labels">
+          <ul>
+            <li class="item item-heading">Item(s)</li>
+            <li class="price">Price</li>
+            <li class="quantity">Quantity</li>
+            <li class="subtotal">Subtotal</li>
+          </ul>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'k.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>Kurti</strong></h1>
+              </div>
+          </div>
+          <div class="price">55.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'lb.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>Bottom</strong></h1>
+            </div>
+          </div>
+          <div class="price">45.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'we.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>salwar kameez</strong></h1>
+            </div>
+          </div>
+          <div class="price">199.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'saree.jpg' %}" height="150px" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>Saree</strong></h1>
+            </div>
+          </div>
+          <div class="price">99.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        
+</div>
+</div>
+</div>
+<div id="kids" class="tabcontent">
+  <div class="basket">
+      <div class="basket-labels">
+          <ul>
+            <li class="item item-heading">Item(s)</li>
+            <li class="price">Price</li>
+            <li class="quantity">Quantity</li>
+            <li class="subtotal">Subtotal</li>
+          </ul>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'kt.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>shirt</strong></h1>
+              </div>
+          </div>
+          <div class="price">35.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        <div class="basket-product">
+          <div class="item">
+            <div class="product-image">
+              <img src="{% static 'kb.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+            </div>
+            <div class="product-details">
+              <h1><strong>pant</strong></h1>
+            </div>
+          </div>
+          <div class="price">35.00</div>
+          <div class="quantity">
+            <input type="number" value="0" min="0" class="quantity-field">
+          </div>
+          <div class="subtotal">0.00</div>
+        </div>
+        <div class="basket-product">
+            <div class="item">
+              <div class="product-image">
+            <img src="{% static 'ke.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+              </div>
+              <div class="product-details">
+                <h1><strong>Ethnic</strong></h1>
+              </div>
+            </div>
+            <div class="price">129.00</div>
+            <div class="quantity">
+              <input type="number" value="0" min="0" class="quantity-field">
+            </div>
+            <div class="subtotal">0.00</div>
+          </div>
+          <div class="basket-product">
+            <div class="item">
+              <div class="product-image">
+                <img src="{% static 'suit.jpeg' %}" alt="Placholder Image 2" height="100px" class="product-frame">
+              </div>
+              <div class="product-details">
+                <h1><strong>suit</strong></h1>
+              </div>
+            </div>
+            <div class="price">199.00</div>
+            <div class="quantity">
+              <input type="number" value="0" min="0" class="quantity-field">
+            </div>
+            <div class="subtotal">0.00</div>
+          </div>
+          <div class="basket-product">
+            <div class="item">
+              <div class="product-image">
+                <img src="{% static 'frock.jpg' %}" alt="Placholder Image 2" height="100px" class="product-frame">
+              </div>
+              <div class="product-details">
+                <h1><strong>frock</strong></h1>
+              </div>
+            </div>
+            <div class="price">129.00</div>
+            <div class="quantity">
+              <input type="number" value="0" min="0" class="quantity-field">
+            </div>
+            <div class="subtotal">0.00</div>
+          </div>
+</div>
+</div>
+</div>
+<div id="household" class="tabcontent">
+  <div class="basket">
+      <div class="basket-labels">
+          <ul>
+            <li class="item item-heading">Item(s)</li>
+            <li class="price">Price</li>
+            <li class="quantity">Quantity</li>
+            <li class="subtotal">Subtotal</li>
+          </ul>
+        </div>
+  <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 's.jpeg' %}" alt="Placholder Image 2" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Bedsheet</strong></h1>
+        </div>
+      </div>
+      <div class="price">69.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+      <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'bl.jpg' %}" alt="Placholder Image 2" height="100px" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Blanket</strong></h1>
+        </div>
+      </div>
+      <div class="price">89.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+    <div class="basket-product">
+      <div class="item">
+        <div class="product-image">
+          <img src="{% static 'sc.jpg' %}" alt="Placholder Image 2" height="115px" class="product-frame">
+        </div>
+        <div class="product-details">
+          <h1><strong>Curtain</strong></h1>
+        </div>
+      </div>
+      <div class="price">79.00</div>
+      <div class="quantity">
+        <input type="number" value="0" min="0" class="quantity-field">
+      </div>
+      <div class="subtotal">0.00</div>
+    </div>
+    <div class="basket-product">
+        <div class="item">
+          <div class="product-image">
+            <img src="{% static 't.jpeg' %}"  height="100px" alt="Placholder Image 2" class="product-frame">
+          </div>
+          <div class="product-details">
+            <h1><strong>Towel</strong></h1>
+          </div>
+        </div>
+        <div class="price">49.00</div>
+        <div class="quantity">
+          <input type="number" value="0" min="0" class="quantity-field">
+        </div>
+        <div class="subtotal">0.00</div>
+      </div>
+       <div class="basket-product">
+        <div class="item">
+          <div class="product-image">
+            <img src="{% static 'pc.jpg' %}" alt="Placholder Image 2" class="product-frame">
+          </div>
+          <div class="product-details">
+            <h1><strong>Pillow cover</strong></h1>
+          </div>
+        </div>
+        <div class="price">39.00</div>
+        <div class="quantity">
+          <input type="number" value="0" min="0" class="quantity-field">
+        </div>
+        <div class="subtotal">0.00</div>
+      </div>
+      
+      
+</div>
+</div>
+</div>
+
+    
+        
+
+</div>
+</div>
+</div>
+
+<script>
+
+var promoCode;
+var promoPrice;
+var fadeTime = 300;
+$('.quantity input').change(function() {
+  updateQuantity(this);
+});
+
+$('.remove button').click(function() {
+  removeItem(this);
+});
+
+$(document).ready(function() {
+  updateSumItems();
+});
+
+function recalculateCart(onlyTotal) {
+  var subtotal = 0;
+
+  $('.basket-product').each(function() {
+    subtotal += parseFloat($(this).children('.subtotal').text());
+  });
+
+  var total = subtotal;
+  document.getElementById("mytext").value = total; 
+  if (onlyTotal) {
+    $('.total-value').fadeOut(fadeTime, function() {
+      $('#basket-total').html(total.toFixed(2));
+      $('.total-value').fadeIn(fadeTime);
+    });
+  } else {
+    $('.final-value').fadeOut(fadeTime, function() {
+      $('#basket-subtotal').html(subtotal.toFixed(2));
+      $('#basket-total').html(total.toFixed(2));
+      if (total == 0) {
+        $('.checkout-cta').fadeOut(fadeTime);
+      } else {
+        $('.checkout-cta').fadeIn(fadeTime);
+      }
+      $('.final-value').fadeIn(fadeTime);
+    });
+  }
+}
+var myvar=[];
+myvar.push($("#q").val());
+sessionStorage.setItem("quantity",myvar);
+var my=[];
+my.push($("#r").val());
+sessionStorage.setItem("quant",my);
+function updateQuantity(quantityInput) {
+  var productRow = $(quantityInput).parent().parent();
+  var price = parseFloat(productRow.children('.price').text());
+  var quantity = $(quantityInput).val();
+  var linePrice = price * quantity;
+  productRow.children('.subtotal').each(function() {
+    $(this).fadeOut(fadeTime, function() {
+      $(this).text(linePrice.toFixed(2));
+      recalculateCart();
+      $(this).fadeIn(fadeTime);
+    });
+  });
+
+  productRow.find('.item-quantity').text(quantity);
+  updateSumItems();
+}
+
+function updateSumItems() {
+  var sumItems = 0;
+  $('.quantity input').each(function() {
+    sumItems += parseInt($(this).val());
+  });
+  $('.total-items').text(sumItems);
+}
+
+function removeItem(removeButton) {
+  var productRow = $(removeButton).parent().parent();
+  productRow.slideUp(fadeTime, function() {
+    productRow.remove();
+    recalculateCart();
+    updateSumItems();
+  });
+}
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen").click();
+var myvar=[];
+    myvar.push($("#total").val());
+   sessionStorage.setItem("quantity",myvar);
+   document.getElementById("item").innerHTML=sessionStorage.getItem("quantity");
+</script>
+  
+</body>
+</html> 
+
+{% else %}
+ {% load static %}
+<html>
+  <head>
+<title>Carousel page</title>
+  <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+              <style>
+              .body {
+               background-image:url({% static 'e.jpg' %});
+               font-style: oblique;
+            }
+              /* Make the image fully responsive */
+              .carousel-inner img {
+                width: 70%;
+                height: 50%;
+              }
+              .flip-box {
+              background-color:transparent;
+              width: 300px;
+              height: 300px;
+              border: 1px solid:transparent;
+              perspective: 1000px;
+            }
+            
+            .flip-box-inner {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              text-align: center;
+              transition: transform 0.8s;
+              transform-style: preserve-3d;
+            }
+            
+            .flip-box:hover .flip-box-inner {
+              transform: rotateY(180deg);
+            }
+            
+            .flip-box-front, .flip-box-back {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              backface-visibility: hidden;
+            }
+            
+            .flip-box-front {
+              background-color:transparent;
+              color: black;
+            }
+            
+            .flip-box-back {
+              background-color:skyblue;
+              color:black;
+              transform: rotateY(180deg);
+            }
+            .button1 {
+                    border-radius:10px;
+                    background-color:white;  
+                    color:#5AB9D0; 
+                    border: 2px solid #5AB9D0;
+                    padding:15px 32px;
+                    position:relative;
+                    right:30px;
+                  }
+                table,td,th{
+                    width:100%;
+                    background:white;
+                    padding:1px;
+               }
+               div.relative{
+                   align:right;
+                   position:relative;
+                   right:40px;
+               }
+               .round1 {
+              border: 2px solid #5AB9D0;
+              border-radius: 5px;
+              padding:10px;
+            }
+             
+              
+             
+              </style>
+            
+            
+                    <div class="round1">
+                <table>
+                    <tr>
+                        <th style="align:left;position:relative;top:8px"> 
+                            <img src="{% static 'l.png' %}" align="left" width="80px" height="75px">
+                        </th>
+                        <th style="align:left;position:relative;right:750px;">
+                
+                    <img src="{% static 'logo.png' %}" width="200px" height="75px">
+                
+                </th>
+                  <th><a href="{% url 'login' %}"><button class="button button1"> <font size="4">login</font> </button></a></th>
+                  <th><a href="{% url 'signup' %}"><button class="button button1"> <font size="4">signup</font> </button></a></th>
+              </tr>
+                    </table>
+                    </div>
+                  </head>
+            <body>
+                  <div class="body">
+                          <center>
+                          <div id="demo" class="carousel slide" data-ride="carousel">
+                            <ul class="carousel-indicators">
+                              <li data-target="#demo" data-slide-to="0" class="active"></li>
+                              <li data-target="#demo" data-slide-to="1"></li>
+                              <li data-target="#demo" data-slide-to="2"></li>
+                            </ul>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <img src="{% static 'i1.jpg' %}" alt="Los Angeles" width="800" height="100">
+                                <div class="carousel-caption">
+                                  <h4>Your laundry is our responsibility</h4>
+                                </div>   
+                              </div>
+                              <div class="carousel-item">
+                                <img src="{% static 'i2.png' %}" alt="Chicago" width="800" height="100">
+                                <div class="carousel-caption">
+                                </div>   
+                              </div>
+                              <div class="carousel-item">
+                                <img src="{% static 'i4.jpg' %}" alt="Chicago" width="800" height="100">
+                                <div class="carousel-caption">
+                                  <h4>Wash away your worries</h4>
+                                </div>   
+                              </div>
+                              <div class="carousel-item">
+                                <img src="{% static 'i3.png' %}" alt="New York" width="800" height="100">
+                                <div class="carousel-caption">
+                                </div>   
+                              </div>
+                               
+                            </div>
+                            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                              <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#demo" data-slide="next">
+                              <span class="carousel-control-next-icon"></span>
+                            </a>
+                          </div>
+                          </center>
+                          <br>
+                          <center>
+                          
+                          
+                          <div class="container">
+                          <div class = "row">
+                          <div class ="col-sm-4">
+                           <div class="flip-box">
+                            <div class="flip-box-inner">
+                              <div class="flip-box-front">
+                                <img src="{% static 'p.png' %}" alt="Paris" style="width:300px;height:300px">
+                              </div>
+                              <div class="flip-box-back">
+                                <h2>Best prices</h2>
+                                <p> We offer best affordable rates for Dry-cleaning and Laundry service. To help you save big, you can choose from our various packages.</p>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          
+                          <div class="col-sm-4">
+                          <div class="flip-box">
+                            <div class="flip-box-inner">
+                              <div class="flip-box-front">
+                                <img src="{% static 'pick up.png' %}" alt="Paris" style="width:300px;height:300px">
+                              </div>
+                              <div class="flip-box-back">
+                                <h2>Pick-up and Delivery</h2>
+                                <p> Hassle free pick-up and delivery as per your convenience and preference.</p>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          
+                          <div class="col-sm-4">
+                          <div class="flip-box">
+                            <div class="flip-box-inner">
+                              <div class="flip-box-front">
+                                <img src="{% static 'ok.png' %}"alt="Paris" style="width:300px;height:300px">
+                              </div>
+                              <div class="flip-box-back">
+                                <h2>Convenience</h2>
+                                <p> Just book an Online Laundry or Dry-Cleaning service or drop it yourself at your nearest store. Choose whatever time is convenient for you and we will do the rest.</p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          </div>
+                          
+                          </center>
+                          </div> 
+                          </div>  
+          </body>
+</html>
+
+{% endif %}
+{% endblock %}

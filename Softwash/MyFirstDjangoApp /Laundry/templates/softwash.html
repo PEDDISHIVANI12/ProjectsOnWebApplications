@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<html>
+    <head>
+        <style>
+            .body {
+               background-image:url({% static 'd.jpg' %});
+               font-style: oblique;
+            }
+        .round1 {
+                    border: 2px solid #5AB9D0;
+                    border-radius: 5px;
+                    padding:10px;
+                  }
+        
+.button1 {
+                    border-radius:10px;
+                    background-color:white;  
+                    color:#5AB9D0; 
+                    border: 2px solid #5AB9D0;
+                    padding:15px 32px;
+                    position:relative;
+                    right:30px;
+                  }
+                table,td,th{
+                    width:100%;
+                    background:white;
+                    padding:1px;
+               }
+        </style>
+<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
+type="text/css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script language="javascript">
+$(document).ready(function () {
+    $("#txtdate").datepicker({
+        minDate: 0
+    });
+});
+ $(document).ready(function () {
+    $("#txtdate1").datepicker({
+        minDate: '+2d'
+    });
+});
+</script>
+               
+               <script>
+                    function myFunction() {
+                      var inpObj = document.getElementById("id1");
+                      if (!inpObj.checkValidity()) {
+                        document.getElementById("demo").innerHTML = "invalid";
+                      } else {
+                        document.getElementById("demo").innerHTML = "&#x2611";
+                      } 
+                    } 
+                    </script>
+<div class="round1" style="background-color:white">
+        <table>
+            <tr>
+                <th style="align:left;position:relative;top:8px"> 
+                    <img src="{% static 'l.png' %}" align="left" width="85px" height="75px">
+                    
+          <img src="{% static 'logo.png' %}" align="left" width="160px" height="85px"></th>
+          <th><a href="{% url 'index' %}"><button class="button button1"> <font size="4">logout</font> </button></a></th>   
+        </tr>
+            </table>
+            </div>
+    </head>
+    <body>
+            <div class="body">
+   <div class="container">
+       <div class="contact-form medium-padding120">
+           <form class="contact-form" method="post" action="{% url 'add_service_submit' %}">
+               <center>
+               {% csrf_token %}
+               <div class="row">
+                <div class="tab"><h1>Time slot:</h1>
+                    Pickup Date :
+                    <input id="txtdate" type="text" name="pickup_date" reqiured>
+                    <br><br><form>            
+                    &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;
+                    &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;
+                    &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;
+                    <select required>
+                        <option value="" >--Choose pickup Time--</option>
+                        <option>10 am - 1pm</option>
+                        <option>1 pm - 4 pm</option>
+                        <option>4 pm - 7 pm</option>
+                    </select>
+                </form>
+                <br><br>Delivery Date :
+                    <input id="txtdate1" type="text" name="delivery_date" required>
+                    <br><br><form>  
+                            &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;
+                            &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;
+                            &NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;          
+                    <select required>
+                        <option value="" >--Choose delivery Time--</option>
+                        <option>10 am - 1pm</option>
+                        <option>1 pm - 4 pm</option>
+                        <option>4 pm - 7 pm</option>
+                    </select>
+                </form>
+                  </div>
+                </div>
+                      <h1>Pickup-address:</h1>
+                      <br><label for="uname">Flat no:</label>
+                      &NonBreakingSpace;&NonBreakingSpace;
+                      <input type="text" placeholder="Enter valid flat no." name="pickup_flat" required>
+                      <br><br><label for="uname">Locality:</label>
+                      &NonBreakingSpace;<input type="text" placeholder="Enter valid locality" name="pickup_locality" required>
+                      <br><br><label for="uname">City:&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;</label>
+                      <input type="text" name="name" value="Hyderabad"disabled="disabled">    
+                      <br><br><label for="uname">Country:</label>
+                      <input type="text" name="name" value="India"disabled="disabled"><br><br>
+                      <br><br><label for="uname">Pincode:</label>
+                      <input id="id1" type="number" min="500000" max="500100" onchange="myFunction()" placeholder="Enter pincode" name="pickup_pincode"  required>
+                      <p id="demo"></p>
+                      
+                      
+                      <h1>Delivery-address:</h1>
+                      <br><label for="uname">Flat no:</label>
+                      &NonBreakingSpace;&NonBreakingSpace;
+                      <input type="text" placeholder="Enter valid flat no." name="delivery_flat" required>
+                      <br><br><label for="uname">Locality:</label>
+                      &NonBreakingSpace;<input type="text" placeholder="Enter valid locality" name="delivery_locality" required> 
+                      <br><br><label for="uname">City:&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;&NonBreakingSpace;</label>
+                      <input type="text" name="name" value="Hyderabad"disabled="disabled">
+                      <br><br><label for="uname">Country:</label>
+                      <input type="text" name="name" value="India"disabled="disabled"><br><br>
+                      <br><br><label for="uname">Pincode:</label>
+                      <input id="id1" type="number" min="500000" max="500100" onchange="myFunction()" placeholder="Enter pincode" name="delivery_pincode"  required>
+                      <p id="demo"></p>
+                
+                      <h1>Payment:</h1>
+                      <p>Please select the mode of payment</p>
+                      <input type="radio" name="pay" value="Cash on delivery">Cash on delivery<br>
+                      <input type="radio" name="pay" value="Card on delivery ">Card on delivery<br>
+
+                <br><div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label for="uname">Email-ID:</label><input  type="email" name="email" class="input-standard-grey" placeholder="Enter a valid Email-ID" required>
+                         </div>
+                </div>
+                
+                <br><div class="row">
+                        <div class="submit-block-table">
+                            <div class="col-lg-3 table-cell">
+                                <button class="btn btn-small btn--primary">
+                                    <span class="text">Place Order</span>
+                                </button>
+                            </div>
+                            <div class="col-lg-5 table-cell">
+                            </div>
+
+                         </div>
+                </div>
+                </center>
+            </form>
+        </div>
+    </div>
+    </div>
+    </body>
+    </html>
+{% endblock %}

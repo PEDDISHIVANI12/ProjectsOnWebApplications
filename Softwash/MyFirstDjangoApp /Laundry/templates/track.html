@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<html>
+  <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <style>  
+      ol.progtrckr {
+    margin: 0;
+    padding: 0;
+    list-style-type none;
+}
+
+ol.progtrckr li {
+    display: inline-block;
+    text-align: center;
+    line-height: 3.5em;
+}
+
+ol.progtrckr[data-progtrckr-steps="2"] li { width: 49%; }
+ol.progtrckr[data-progtrckr-steps="3"] li { width: 33%; }
+ol.progtrckr[data-progtrckr-steps="4"] li { width: 24%; }
+ol.progtrckr[data-progtrckr-steps="5"] li { width: 19%; }
+ol.progtrckr[data-progtrckr-steps="6"] li { width: 16%; }
+ol.progtrckr[data-progtrckr-steps="7"] li { width: 14%; }
+ol.progtrckr[data-progtrckr-steps="8"] li { width: 12%; }
+ol.progtrckr[data-progtrckr-steps="9"] li { width: 11%; }
+
+ol.progtrckr li.progtrckr-done {
+    color: black;
+    border-bottom: 4px solid yellowgreen;
+}
+ol.progtrckr li.progtrckr-todo {
+    color: silver; 
+    border-bottom: 4px solid silver;
+}
+
+ol.progtrckr li:after {
+    content: "\00a0\00a0";
+}
+ol.progtrckr li:before {
+    position: relative;
+    bottom: -2.5em;
+    float: left;
+    left: 50%;
+    line-height: 1em;
+}
+ol.progtrckr li.progtrckr-done:before {
+    content: "\2713";
+    color: white;
+    background-color: yellowgreen;
+    height: 2.2em;
+    width: 2.2em;
+    line-height: 2.2em;
+    border: none;
+    border-radius: 2.2em;
+}
+ol.progtrckr li.progtrckr-todo:before {
+    content: "\039F";
+    color: silver;
+    background-color: white;
+    font-size: 2.2em;
+    bottom: -1.2em;
+}
+
+.button1 {
+                    border-radius:10px;
+                    background-color:white;  
+                    color:#5AB9D0; 
+                    border: 2px solid #5AB9D0;
+                    padding:15px 32px;
+                    position:relative;
+                    right:30px;
+                  }
+                table,td,th{
+                    width:100%;
+                    background:white;
+                    padding:1px;
+               }
+        .round1 {
+                    border: 2px solid #5AB9D0;
+                    border-radius: 5px;
+                    padding:10px;
+                  }
+              </style>
+        
+        <div class="round1" style="background-color:white">
+                <table>
+                    <tr>
+                        <th style="align:left;position:relative;top:8px"> 
+                            <img src="{% static 'l.png' %}" align="left" width="85px" height="75px">
+                  <img src="{% static 'logo.png' %}" align="left" width="180px" height="70px"></th>
+                  <th><a href="{% url 'index' %}"><button class="button button1"> <font size="4">logout</font> </button></a></th>  
+                </tr>
+                    </table>
+                    </div>
+                    </head>
+    <body>
+        <table style="width:100%">
+            <tr>
+                    <td><img src="{% static 't.jpg' %}" width="300px" height="300px"></td>
+                    <td><img src="{% static 't2.png' %}" width="330px" height="300px"></td>
+                    <td><img src="{% static 't5.jpg' %}" width="300px" height="250px"></td>
+                    <td><img src="{% static 't4.jpg' %}" width="300px" height="300px"></td>
+                    
+                  
+                  </tr>
+            <tr>
+              <td><h3>You order</h3>
+                <p>Book your launrdy online with our softwash app</p></td>
+              <td><h3>We collect</h3>
+                <p>Collection and delivery is free just <br>let us know where you are </p></td> 
+              <td><h3>We Clean</h3>
+                <p>We gurantee that you'll be satisfied with our quality  </p></td>
+                <br><td>&NonBreakingSpace;<h3>We Deliver</h3>
+                <p>We will deliver your pristine garments back to anytime and anywhere</p></td>
+            </tr>
+            
+      <ol class="progtrckr" data-progtrckr-steps="4">
+        <li class="progtrckr-done">Ordered </li><!--
+     --><li class="progtrckr-todo">Collected</li><!--
+     --><li class="progtrckr-todo">Cleaned</li><!--
+     --><li class="progtrckr-todo">Delivered</li>
+    </ol>
+    </body>
+    </html>
+    {% endblock %}
